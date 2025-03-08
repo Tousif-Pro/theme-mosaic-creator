@@ -11,14 +11,25 @@ import {
   getThemesByCategory,
 } from "@/constants/themes";
 
-const Index = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [filteredThemes, setFilteredThemes] = useState(getThemesByCategory("all"));
+interface IndexProps {
+  initialCategory?: string;
+}
+
+const Index: React.FC<IndexProps> = ({ initialCategory = "all" }) => {
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [filteredThemes, setFilteredThemes] = useState(getThemesByCategory(initialCategory));
   const featuredThemes = getFeaturedThemes();
 
   useEffect(() => {
     setFilteredThemes(getThemesByCategory(activeCategory));
   }, [activeCategory]);
+
+  // Update active category when initialCategory prop changes
+  useEffect(() => {
+    if (initialCategory) {
+      setActiveCategory(initialCategory);
+    }
+  }, [initialCategory]);
 
   return (
     <div className="min-h-screen flex flex-col">

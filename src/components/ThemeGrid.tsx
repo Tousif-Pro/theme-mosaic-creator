@@ -27,9 +27,12 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
         </div>
       )}
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {themes.map((theme, index) => (
-          <ThemeCard key={theme.id} theme={theme} index={index} />
+          <div key={theme.id} className="flex flex-col gap-4">
+            <ThemeCard theme={theme} index={index} />
+            <h3 className="text-xl font-medium px-1">{theme.title}</h3>
+          </div>
         ))}
       </div>
     </div>

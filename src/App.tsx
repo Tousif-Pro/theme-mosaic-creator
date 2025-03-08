@@ -9,6 +9,7 @@ import ThemeDetails from "./pages/ThemeDetails";
 import ThemeCode from "./pages/ThemeCode";
 import NotFound from "./pages/NotFound";
 
+// Create a new QueryClient for react-query
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -21,6 +22,15 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/theme/:id" element={<ThemeDetails />} />
           <Route path="/theme/:id/code" element={<ThemeCode />} />
+          
+          {/* Category specific routes */}
+          <Route path="/landing" element={<Index initialCategory="landing" />} />
+          <Route path="/dashboard" element={<Index initialCategory="dashboard" />} />
+          <Route path="/portfolio" element={<Index initialCategory="portfolio" />} />
+          <Route path="/ecommerce" element={<Index initialCategory="ecommerce" />} />
+          <Route path="/blog" element={<Index initialCategory="blog" />} />
+          
+          {/* Legacy routes */}
           <Route path="/projects" element={<Index />} />
           <Route path="/latest" element={<Index />} />
           <Route path="/featured" element={<Index />} />
