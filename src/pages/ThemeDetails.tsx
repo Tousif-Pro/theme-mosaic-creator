@@ -165,6 +165,14 @@ export default function App() {
                 <Eye className="w-4 h-4 mr-2" />
                 Live Preview
               </a>
+              
+              <Link
+                to={`/theme/${id}/code`}
+                className="w-full py-3 px-4 rounded-lg bg-secondary text-secondary-foreground font-medium flex items-center justify-center hover:bg-secondary/80 transition-colors"
+              >
+                <Code className="w-4 h-4 mr-2" />
+                View All Components
+              </Link>
             </div>
             
             <div className="rounded-xl border border-border p-6">
