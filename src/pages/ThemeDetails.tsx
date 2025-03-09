@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Eye, ExternalLink, GitHub } from "lucide-react";
+import { ArrowLeft, Eye, ExternalLink, Github } from "lucide-react";
 import { getThemeById, getThemesByCategory } from "@/constants/themes";
 import ThemeGrid from "@/components/ThemeGrid";
 import { cn } from "@/lib/utils";
@@ -98,7 +98,7 @@ const ThemeDetails = () => {
                 onClick={handleGitHubRequest}
                 className="w-full py-3 px-4 rounded-lg bg-black text-white font-medium flex items-center justify-center hover:bg-black/90 transition-colors"
               >
-                <GitHub className="w-4 h-4 mr-2" />
+                <Github className="w-4 h-4 mr-2" />
                 Request GitHub Access
               </button>
               
