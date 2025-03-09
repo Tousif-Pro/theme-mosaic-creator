@@ -2,6 +2,7 @@
 import React from "react";
 import ThemeCard from "./ThemeCard";
 import { ThemeType } from "@/constants/themes";
+import { useNavigate } from "react-router-dom";
 
 interface ThemeGridProps {
   themes: ThemeType[];
@@ -14,6 +15,12 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
   title, 
   description 
 }) => {
+  const navigate = useNavigate();
+
+  const handleThemeClick = (themeId: string) => {
+    navigate(`/theme/${themeId}`);
+  };
+
   return (
     <div className="w-full">
       {(title || description) && (
@@ -29,7 +36,11 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {themes.map((theme, index) => (
-          <div key={theme.id} className="flex flex-col gap-4">
+          <div 
+            key={theme.id} 
+            className="flex flex-col gap-4 cursor-pointer"
+            onClick={() => handleThemeClick(theme.id)}
+          >
             <ThemeCard theme={theme} index={index} />
             <h3 className="text-xl font-medium px-1">{theme.title}</h3>
           </div>

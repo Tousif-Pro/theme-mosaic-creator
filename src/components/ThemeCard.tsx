@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ThemeType } from "@/constants/themes";
 
@@ -12,6 +12,7 @@ interface ThemeCardProps {
 const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -25,16 +26,22 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
     setIsLoaded(true);
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/theme/${theme.id}`);
+  };
+
   return (
     <div 
       className={cn(
-        "theme-card overflow-hidden rounded-xl bg-card border border-border",
+        "theme-card overflow-hidden rounded-xl bg-card border border-border cursor-pointer",
         "opacity-0 translate-y-4",
         isVisible && "opacity-100 translate-y-0 transition-all duration-500 ease-out"
       )}
       style={{ transitionDelay: `${index * 50}ms` }}
+      onClick={handleCardClick}
     >
-      <Link to={`/theme/${theme.id}`} className="block">
+      <div className="block">
         <div className="relative overflow-hidden aspect-[16/9]">
           <div className={cn("image-reveal", isLoaded && "loaded")}>
             <img
@@ -75,7 +82,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
             ))}
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

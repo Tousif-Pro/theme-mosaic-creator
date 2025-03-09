@@ -1,13 +1,13 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Eye, ExternalLink, Github, X } from "lucide-react";
+import { ArrowLeft, Eye, ExternalLink, Github } from "lucide-react";
 import { getThemeById, getThemesByCategory } from "@/constants/themes";
 import ThemeGrid from "@/components/ThemeGrid";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogClose, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,6 +29,7 @@ const ThemeDetails = () => {
     name: false,
     email: false,
   });
+  const themeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id) {
@@ -37,6 +38,9 @@ const ThemeDetails = () => {
       
       if (!foundTheme) {
         navigate("/");
+      } else {
+        // Scroll to the top of the page when theme is loaded
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   }, [id, navigate]);
@@ -108,7 +112,7 @@ const ThemeDetails = () => {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16" ref={themeRef}>
       <div className="container mx-auto px-4 py-12">
         <Link 
           to="/" 
@@ -231,10 +235,6 @@ const ThemeDetails = () => {
         <DialogContent className="sm:max-w-[500px]">
           <DialogTitle className="flex justify-between items-center">
             <span>Request GitHub Access</span>
-            <DialogClose className="h-4 w-4 opacity-70 ring-offset-background transition-opacity hover:opacity-100">
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </DialogClose>
           </DialogTitle>
           <DialogDescription>
             Fill out this form to request access to the GitHub repository for {theme.title}.
