@@ -1,12 +1,16 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Eye, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, Eye, ExternalLink, Github, X } from "lucide-react";
 import { getThemeById, getThemesByCategory } from "@/constants/themes";
 import ThemeGrid from "@/components/ThemeGrid";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogClose, DialogDescription } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const ThemeDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +18,17 @@ const ThemeDetails = () => {
   const [theme, setTheme] = useState(id ? getThemeById(id) : undefined);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { toast } = useToast();
+  const [showRequestForm, setShowRequestForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    message: ""
+  });
+  const [formErrors, setFormErrors] = useState({
+    name: false,
+    email: false,
+  });
 
   useEffect(() => {
     if (id) {
@@ -26,11 +41,50 @@ const ThemeDetails = () => {
     }
   }, [id, navigate]);
 
-  const handleGitHubRequest = () => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error if user types in a required field
+    if (name === 'name' || name === 'email') {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: false
+      }));
+    }
+  };
+
+  const handleSubmitRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate form
+    const errors = {
+      name: !formData.name.trim(),
+      email: !formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+    };
+    
+    if (errors.name || errors.email) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    // Submit the form data (in a real app, this would send data to a server)
     toast({
-      title: "Access Request Sent",
-      description: "We've received your request for repository access. Our team will contact you shortly.",
-      duration: 4000,
+      title: "Request Submitted Successfully",
+      description: "We've received your GitHub access request. Our team will contact you shortly.",
+      duration: 5000,
+    });
+    
+    // Close the dialog and reset form
+    setShowRequestForm(false);
+    setFormData({
+      name: "",
+      email: "",
+      company: "",
+      message: ""
     });
   };
 
@@ -96,7 +150,7 @@ const ThemeDetails = () => {
           <div className="space-y-8">
             <div className="rounded-xl border border-border p-6 space-y-4">
               <Button
-                onClick={handleGitHubRequest}
+                onClick={() => setShowRequestForm(true)}
                 className="w-full bg-black text-white font-medium hover:bg-black/90"
               >
                 <Github className="w-4 h-4 mr-2" />
@@ -171,6 +225,93 @@ const ThemeDetails = () => {
           </div>
         )}
       </div>
+
+      {/* GitHub Access Request Form Dialog */}
+      <Dialog open={showRequestForm} onOpenChange={setShowRequestForm}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogTitle className="flex justify-between items-center">
+            <span>Request GitHub Access</span>
+            <DialogClose className="h-4 w-4 opacity-70 ring-offset-background transition-opacity hover:opacity-100">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
+          </DialogTitle>
+          <DialogDescription>
+            Fill out this form to request access to the GitHub repository for {theme.title}.
+          </DialogDescription>
+          
+          <form onSubmit={handleSubmitRequest} className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="required">
+                Name <span className="text-destructive">*</span>
+              </Label>
+              <Input 
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className={formErrors.name ? "border-destructive" : ""}
+                placeholder="Your full name"
+              />
+              {formErrors.name && (
+                <p className="text-sm text-destructive">Please enter your name</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="email" className="required">
+                Email <span className="text-destructive">*</span>
+              </Label>
+              <Input 
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={formErrors.email ? "border-destructive" : ""}
+                placeholder="your.email@example.com"
+              />
+              {formErrors.email && (
+                <p className="text-sm text-destructive">Please enter a valid email address</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="company">Company/Organization</Label>
+              <Input 
+                id="company"
+                name="company"
+                value={formData.company}
+                onChange={handleInputChange}
+                placeholder="Your company or organization (optional)"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="message">Additional Information</Label>
+              <Textarea 
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="Tell us more about your project and how you plan to use this template"
+                rows={4}
+              />
+            </div>
+            
+            <div className="flex justify-end gap-2 pt-2">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setShowRequestForm(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Submit Request</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
