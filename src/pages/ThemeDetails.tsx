@@ -6,6 +6,7 @@ import { getThemeById, getThemesByCategory } from "@/constants/themes";
 import ThemeGrid from "@/components/ThemeGrid";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const ThemeDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -94,13 +95,13 @@ const ThemeDetails = () => {
           
           <div className="space-y-8">
             <div className="rounded-xl border border-border p-6 space-y-4">
-              <button
+              <Button
                 onClick={handleGitHubRequest}
-                className="w-full py-3 px-4 rounded-lg bg-black text-white font-medium flex items-center justify-center hover:bg-black/90 transition-colors"
+                className="w-full bg-black text-white font-medium hover:bg-black/90"
               >
                 <Github className="w-4 h-4 mr-2" />
                 Request GitHub Access
-              </button>
+              </Button>
               
               <a
                 href="#"
@@ -145,12 +146,12 @@ const ThemeDetails = () => {
             </div>
             
             <div className="rounded-xl border border-border p-6">
-              <h3 className="text-lg font-medium mb-3">Need customization?</h3>
+              <h3 className="text-lg font-medium mb-3">Need help or customization?</h3>
               <p className="text-muted-foreground text-sm mb-4">
-                Get this theme customized to your brand and specific requirements.
+                Get this theme customized to your brand and specific requirements by contacting our team.
               </p>
               <a
-                href="#"
+                href="mailto:contact@example.com"
                 className="text-sm text-blue-600 hover:underline flex items-center"
               >
                 Contact us
