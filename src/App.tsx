@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ThemeDetails from "./pages/ThemeDetails";
 import ThemeCode from "./pages/ThemeCode";
 import NotFound from "./pages/NotFound";
+import Templates from "./pages/Templates";
 
 // Create a new QueryClient for react-query
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/theme/:id" element={<ThemeDetails />} />
           <Route path="/theme/:id/code" element={<ThemeCode />} />
+          <Route path="/templates" element={<Templates />} />
           
           {/* Category specific routes */}
           <Route path="/landing" element={<Index initialCategory="landing" />} />
@@ -34,7 +36,6 @@ const App = () => (
           <Route path="/projects" element={<Index />} />
           <Route path="/latest" element={<Index />} />
           <Route path="/featured" element={<Index />} />
-          <Route path="/templates" element={<Index />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

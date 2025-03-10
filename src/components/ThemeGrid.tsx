@@ -21,6 +21,10 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
     navigate(`/theme/${themeId}`);
   };
 
+  const handleExploreClick = () => {
+    navigate("/templates");
+  };
+
   return (
     <div className="w-full">
       {(title || description) && (
@@ -30,6 +34,15 @@ const ThemeGrid: React.FC<ThemeGridProps> = ({
           )}
           {description && (
             <p className="text-muted-foreground">{description}</p>
+          )}
+          
+          {title === "Browse All Templates" && (
+            <button 
+              onClick={handleExploreClick}
+              className="mt-6 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90"
+            >
+              Explore Now
+            </button>
           )}
         </div>
       )}

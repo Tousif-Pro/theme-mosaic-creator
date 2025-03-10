@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Eye, ExternalLink, Github } from "lucide-react";
-import { getThemeById, getThemesByCategory } from "@/constants/themes";
-import ThemeGrid from "@/components/ThemeGrid";
+import { ArrowLeft, Eye, ExternalLink, Github, Mail, Phone, MapPin } from "lucide-react";
+import { getThemeById } from "@/constants/themes";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 
 const ThemeDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +19,7 @@ const ThemeDetails = () => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { toast } = useToast();
   const [showRequestForm, setShowRequestForm] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -107,15 +108,11 @@ const ThemeDetails = () => {
     );
   }
 
-  const relatedThemes = getThemesByCategory(theme.category)
-    .filter(t => t.id !== theme.id)
-    .slice(0, 3);
-
   return (
     <div className="min-h-screen pt-16" ref={themeRef}>
       <div className="container mx-auto px-4 py-12">
         <Link 
-          to="/" 
+          to="/templates" 
           className="inline-flex items-center mb-8 text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="mr-2 w-4 h-4" />
@@ -208,26 +205,17 @@ const ThemeDetails = () => {
               <p className="text-muted-foreground text-sm mb-4">
                 Get this theme customized to your brand and specific requirements by contacting our team.
               </p>
-              <a
-                href="mailto:contact@example.com"
-                className="text-sm text-blue-600 hover:underline flex items-center"
+              <Button
+                variant="link"
+                onClick={() => setShowContactModal(true)}
+                className="text-sm text-blue-600 hover:underline p-0 h-auto flex items-center"
               >
                 Contact us
                 <ExternalLink className="w-3 h-3 ml-1" />
-              </a>
+              </Button>
             </div>
           </div>
         </div>
-        
-        {relatedThemes.length > 0 && (
-          <div className="mt-20">
-            <ThemeGrid 
-              themes={relatedThemes} 
-              title="Related Templates" 
-              description="You might also be interested in these similar templates"
-            />
-          </div>
-        )}
       </div>
 
       {/* GitHub Access Request Form Dialog */}
@@ -310,6 +298,63 @@ const ThemeDetails = () => {
               <Button type="submit">Submit Request</Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Information Modal */}
+      <Dialog open={showContactModal} onOpenChange={setShowContactModal}>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogTitle>Contact Us</DialogTitle>
+          <DialogDescription>
+            Reach out to our team for any questions or customization requests.
+          </DialogDescription>
+          
+          <div className="space-y-4 mt-2">
+            <div className="flex items-start">
+              <Mail className="w-5 h-5 mr-3 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium">Email</h4>
+                <a href="mailto:info@themosaic.com" className="text-sm text-muted-foreground hover:underline">
+                  info@themosaic.com
+                </a>
+              </div>
+            </div>
+            
+            <Separator />
+            
+            <div className="flex items-start">
+              <Phone className="w-5 h-5 mr-3 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium">Phone</h4>
+                <a href="tel:+1234567890" className="text-sm text-muted-foreground hover:underline">
+                  +1 (234) 567-890
+                </a>
+              </div>
+            </div>
+            
+            <Separator />
+            
+            <div className="flex items-start">
+              <MapPin className="w-5 h-5 mr-3 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium">Office</h4>
+                <p className="text-sm text-muted-foreground">
+                  123 Template Street, Suite 456<br />
+                  San Francisco, CA 94107
+                </p>
+              </div>
+            </div>
+            
+            <div className="pt-4">
+              <Button 
+                className="w-full"
+                variant="outline"
+                onClick={() => setShowContactModal(false)}
+              >
+                Close
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
