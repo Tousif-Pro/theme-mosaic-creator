@@ -44,21 +44,29 @@ const FeaturedTheme: React.FC<FeaturedThemeProps> = ({ theme }) => {
           </Link>
         </div>
         
-        <div className="relative overflow-hidden rounded-xl md:h-80 shadow-lg">
-          <div className={cn("transition-all duration-700 ease-out", 
-            isImageLoaded ? "opacity-100" : "opacity-0")}>
+        <div className="relative overflow-hidden rounded-xl shadow-lg">
+          {/* Loading skeleton */}
+          <div className={cn(
+            "absolute inset-0 bg-secondary/20", 
+            isImageLoaded ? "opacity-0" : "opacity-100",
+            "transition-opacity duration-300"
+          )}>
+            {!isImageLoaded && (
+              <div className="absolute inset-0 bg-secondary animate-pulse" />
+            )}
+          </div>
+
+          <div className="aspect-[16/10] relative">
             <img
               src={theme.image}
               alt={theme.title}
-              className="w-full h-full object-cover object-top"
+              className={cn(
+                "absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300",
+                isImageLoaded ? "opacity-100" : "opacity-0"
+              )}
               onLoad={() => setIsImageLoaded(true)}
             />
           </div>
-
-          {/* Loading skeleton */}
-          {!isImageLoaded && (
-            <div className="absolute inset-0 bg-secondary animate-pulse" />
-          )}
         </div>
       </div>
     </div>

@@ -42,15 +42,26 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
       onClick={handleCardClick}
     >
       <div className="block">
-        <div className="relative overflow-hidden aspect-[16/9]">
-          <div className={cn("image-reveal", isLoaded && "loaded")}>
-            <img
-              src={theme.image}
-              alt={theme.title}
-              className="w-full h-full object-cover object-top"
-              onLoad={handleImageLoad}
-            />
+        <div className="relative overflow-hidden aspect-[16/10]">
+          <div className={cn(
+            "w-full h-full bg-secondary/20", 
+            isLoaded ? "opacity-0" : "opacity-100"
+          )}>
+            {/* Loading skeleton */}
+            {!isLoaded && (
+              <div className="absolute inset-0 bg-secondary animate-pulse" />
+            )}
           </div>
+          
+          <img
+            src={theme.image}
+            alt={theme.title}
+            className={cn(
+              "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+              isLoaded ? "opacity-100" : "opacity-0"
+            )}
+            onLoad={handleImageLoad}
+          />
           
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-wrap gap-2">
