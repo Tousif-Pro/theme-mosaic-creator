@@ -43,11 +43,12 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
     >
       <div className="block">
         <div className="relative overflow-hidden aspect-[16/10]">
+          {/* Loading skeleton */}
           <div className={cn(
-            "w-full h-full bg-secondary/20", 
-            isLoaded ? "opacity-0" : "opacity-100"
+            "absolute inset-0 bg-secondary/20", 
+            isLoaded ? "opacity-0" : "opacity-100",
+            "transition-opacity duration-300"
           )}>
-            {/* Loading skeleton */}
             {!isLoaded && (
               <div className="absolute inset-0 bg-secondary animate-pulse" />
             )}
@@ -57,7 +58,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({ theme, index }) => {
             src={theme.image}
             alt={theme.title}
             className={cn(
-              "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
+              "absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-300",
               isLoaded ? "opacity-100" : "opacity-0"
             )}
             onLoad={handleImageLoad}
