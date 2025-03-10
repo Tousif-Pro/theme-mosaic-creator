@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import ThemeGrid from "@/components/ThemeGrid";
 import FeaturedTheme from "@/components/FeaturedTheme";
@@ -19,6 +20,7 @@ const Index: React.FC<IndexProps> = ({ initialCategory = "all" }) => {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [filteredThemes, setFilteredThemes] = useState(getThemesByCategory(initialCategory));
   const featuredThemes = getFeaturedThemes();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setFilteredThemes(getThemesByCategory(activeCategory));
@@ -30,6 +32,10 @@ const Index: React.FC<IndexProps> = ({ initialCategory = "all" }) => {
       setActiveCategory(initialCategory);
     }
   }, [initialCategory]);
+
+  const handleExploreAll = () => {
+    navigate('/templates');
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -88,12 +94,12 @@ const Index: React.FC<IndexProps> = ({ initialCategory = "all" }) => {
               <p className="text-muted-foreground mb-8">
                 Get started with our premium templates and create a stunning website in minutes.
               </p>
-              <a 
-                href="#themes" 
+              <button 
+                onClick={handleExploreAll}
                 className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium transition-all hover:bg-primary/90"
               >
                 Explore All Templates
-              </a>
+              </button>
             </div>
           </div>
         </section>
