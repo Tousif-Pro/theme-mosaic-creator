@@ -26,6 +26,11 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -94,7 +99,6 @@ const Navbar = () => {
                   "text-base py-2 font-medium text-muted-foreground hover:text-foreground transition-colors",
                   location.pathname === item.href && "text-foreground font-semibold"
                 )}
-                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>

@@ -9,6 +9,9 @@ import ThemeDetails from "./pages/ThemeDetails";
 import ThemeCode from "./pages/ThemeCode";
 import NotFound from "./pages/NotFound";
 import Templates from "./pages/Templates";
+import Projects from "./pages/Projects";
+import Latest from "./pages/Latest";
+import Featured from "./pages/Featured";
 
 // Create a new QueryClient for react-query
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ const App = () => (
           <Route path="/theme/:id" element={<ThemeDetails />} />
           <Route path="/theme/:id/code" element={<ThemeCode />} />
           <Route path="/templates" element={<Templates />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/latest" element={<Latest />} />
+          <Route path="/featured" element={<Featured />} />
           
           {/* Category specific routes */}
           <Route path="/landing" element={<Index initialCategory="landing" />} />
@@ -32,10 +38,6 @@ const App = () => (
           <Route path="/ecommerce" element={<Index initialCategory="ecommerce" />} />
           <Route path="/blog" element={<Index initialCategory="blog" />} />
           
-          {/* Legacy routes */}
-          <Route path="/projects" element={<Index />} />
-          <Route path="/latest" element={<Index />} />
-          <Route path="/featured" element={<Index />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
